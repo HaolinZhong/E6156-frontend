@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import Product from '../components/Product'
-import mock_products from "../products";
 import axios from 'axios';
 
 const Homescreen = () => {
@@ -11,12 +10,7 @@ const Homescreen = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             const {data} = await axios.get('/api/products');
-            if (data) {
-                setProducts(data);
-            } else {
-                setProducts(mock_products);
-            }
-
+            setProducts(data);
         }
 
         fetchProducts();

@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button, Container, ListGroupItem } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import axios from 'axios'
-import mock_products from "../products";
 
 const Productscreen = () => {
   const params = useParams()
@@ -11,12 +10,7 @@ const Productscreen = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       const { data } = await axios.get(`/api/products/${params.id}`);
-      if (data) {
-        setProduct(data);
-      } else {
-        setProduct(mock_products[params.id]);
-      }
-
+      setProduct(data);
     }
 
     fetchProduct();

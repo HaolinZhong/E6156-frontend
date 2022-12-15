@@ -21,10 +21,10 @@ const Header = () => {
 
     return (
         <header>
-            <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect sticky='top'>
+            <Navbar bg="light" variant="light" expand="lg" collapseOnSelect sticky='top'>
                 <Container>
                     <LinkContainer to="/">
-                        <Navbar.Brand>ProShop</Navbar.Brand>
+                        <Navbar.Brand>CloudShop</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

@@ -11,28 +11,30 @@ import {
 
 export const listProducts = () => async (dispatch) => {
     try {
-        dispatch({ type: PRODUCT_LIST_REQUEST })
+        dispatch({type: PRODUCT_LIST_REQUEST})
 
-        const { data } = await axios.get('/api/products')
+        const {data} = await axios.get('http://44.201.156.65:5011/items')
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
-            payload: data
+            payload: data.results
         })
+
+        console.log(data.results)
 
     } catch (error) {
         dispatch({
             type: PRODUCT_LIST_FAIL,
-            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+            payload: error.response && error.response.message ? error.response.message : error.message
         })
     }
 }
 
 export const listProductDetails = (id) => async (dispatch) => {
     try {
-        dispatch({ type: PRODUCT_DETAIL_REQUEST })
+        dispatch({type: PRODUCT_DETAIL_REQUEST})
 
-        const { data } = await axios.get(`/api/products/${id}`)
+        const {data} = await axios.get(`http://44.201.156.65:5011/items/${id}`)
 
         dispatch({
             type: PRODUCT_DETAIL_SUCCESS,

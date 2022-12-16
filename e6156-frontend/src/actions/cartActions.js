@@ -2,16 +2,16 @@ import axios from "axios";
 import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD, CART_SAVE_SHIPPING_ADDRESS } from "../constants/cartConstants";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
-    const {data} = await axios.get(`/api/products/${id}`)
+    const {data} = await axios.get(`http://44.201.156.65:5011/items/${id}`)
 
     dispatch({
         type: CART_ADD_ITEM,
         payload: {
-            product: data._id,
+            product: data.id,
             name: data.name,
-            image: data.image,
-            price: data.price,
-            countInStock: data.countInStock,
+            image: data.image_url,
+            price: data.item_price,
+            countInStock: data.stock,
             qty: qty
         }
     })

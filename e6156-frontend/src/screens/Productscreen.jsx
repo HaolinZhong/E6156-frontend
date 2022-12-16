@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { listProductDetails } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import sample from '../sample.jpg'
 
 const Productscreen = () => {
   const params = useParams()
@@ -32,18 +33,18 @@ const Productscreen = () => {
         error ? <Message variant='danger'>{error}</Message> : (
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid></Image>
+              <Image src={product.image_url ? product.image_url : sample} alt={product.name} fluid></Image>
             </Col>
             <Col md={3}>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
-                <ListGroup.Item>
-                  <Rating value={product.rating} text={`${product.numReviews} reviews`} />
-                </ListGroup.Item>
-                <ListGroupItem>Price: ${product.price}</ListGroupItem>
-                <ListGroupItem>Description: {product.description}</ListGroupItem>
+                <ListGroupItem>Price: ${product.item_price}</ListGroupItem>
+                <ListGroupItem>
+                  Description: <br/>
+                  {product.description}
+                </ListGroupItem>
               </ListGroup>
             </Col>
             <Col md={3}>
@@ -52,16 +53,16 @@ const Productscreen = () => {
                   <ListGroupItem>
                     <Row>
                       <Col>Price:</Col>
-                      <Col><strong>${product.price}</strong></Col>
+                      <Col><strong>${product.item_price}</strong></Col>
                     </Row>
                   </ListGroupItem>
                   <ListGroupItem>
                     <Row>
                       <Col>Status:</Col>
-                      <Col>{product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}</Col>
+                      <Col>{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</Col>
                     </Row>
                   </ListGroupItem>
-                  {product.countInStock > 0 && (
+                  {product.stock > 0 && (
                     <ListGroupItem>
                       <Row>
                         <Col>Qty:</Col>
@@ -70,7 +71,7 @@ const Productscreen = () => {
                             value={qty} 
                             onChange={(e) => setQty(e.target.value)}>
                             {
-                              [...Array(product.countInStock).keys()].map(x => {
+                              [...Array(product.stock).keys()].map(x => {
                                   return(<option key={x+1} value={x+1}>{x+1}</option>)
                                 })
                             }
@@ -85,7 +86,7 @@ const Productscreen = () => {
                         onClick={addToCartHandler}
                         className='btn-block' 
                         type="button" 
-                        disabled={product.countInStock === 0}>
+                        disabled={product.stock === 0}>
                         Add To Cart
                       </Button>
                     </Row>

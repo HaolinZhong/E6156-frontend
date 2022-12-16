@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import { Link } from 'react-router-dom'
+import sample from '../sample.jpg'
 
 const Cartscreen = () => {
     const params = useParams()
@@ -45,7 +46,7 @@ const Cartscreen = () => {
                                 <ListGroupItem key={item.name}>
                                     <Row>
                                         <Col md={2}>
-                                            <Image src={item.image} alt={item.name} fluid rounded />
+                                            <Image src={item.image ? item.image : sample} alt={item.name} fluid rounded />
                                         </Col>
                                         <Col md={3}>
                                             <Link to={`/products/${item.product}`}>{item.name}</Link>
@@ -68,7 +69,7 @@ const Cartscreen = () => {
                                                 variant='light'
                                                 onClick={() => removeFromCartHandler(item.product)}
                                             >
-                                                <i className='fas fa-trash'></i>
+                                                <i className='fa-solid fa-trash'></i>
                                             </Button>
                                         </Col>
 

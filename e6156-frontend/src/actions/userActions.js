@@ -15,6 +15,7 @@ import {
     USER_UPDATE_PROFILE_SUCCESS
 } from "../constants/userConstants"
 
+export const base = "http://6156customer-env.eba-m4hgj3cy.us-east-1.elasticbeanstalk.com/"
 
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -28,7 +29,7 @@ export const login = (email, password) => async (dispatch) => {
             }
         }
 
-        const { data } = await axios.post("/api/users/login",
+        const { data } = await axios.post(`${base}/customer/login`,
             { email, password },
             config)
 
@@ -49,9 +50,11 @@ export const login = (email, password) => async (dispatch) => {
     }
 }
 
-export const logout = () => (dispatch) => {
+export const logout = (email) => async (dispatch) => {
+    const { data } = await axios.get(`${base}/customer/logout/${email}`)
     localStorage.removeItem('userInfo')
     dispatch({type: USER_LOGOUT})
+    console.log(data)
 }
 
 
@@ -166,7 +169,7 @@ export const updateUserProfile = (newProfile) => async (dispatch, getState) => {
     }
 }
 
-export const googleLogin = () => async (dispatch) => {
+export const googleLogin = (email, fname, lname) => async (dispatch) => {
     try {
         dispatch({
             type: USER_LOGIN_REQUEST
@@ -178,7 +181,9 @@ export const googleLogin = () => async (dispatch) => {
             }
         }
 
-        const { data } = await axios.post("/api/users/login/google", config)
+        const { data } = await axios.post(`${base}/customer/glogin`,
+            { email, fname, lname },
+            config)
 
         dispatch({
             type: USER_LOGIN_SUCCESS,

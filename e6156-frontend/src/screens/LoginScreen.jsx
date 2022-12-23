@@ -8,6 +8,10 @@ import {login, googleLogin} from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import GoogleButton from 'react-google-button'
+import {base} from "../actions/userActions";
+import {GoogleLogin} from 'react-google-login';
+import {gapi} from 'gapi-script';
+import {USER_LOGIN_SUCCESS} from "../constants/userConstants";
 
 const LoginScreen = () => {
 
@@ -24,6 +28,19 @@ const LoginScreen = () => {
 
     const redirect = location.search ? location.search.split('=')[1] : "/"
 
+    const clientId = '960160720082-u93r27qijkuldc10p4h8r77kg11802op.apps.googleusercontent.com';
+
+    useEffect(() => {
+        const initClient = () => {
+            gapi.client.init({
+                clientId: clientId,
+                scope: ''
+            });
+        };
+        gapi.load('client:auth2', initClient);
+    });
+
+
     useEffect(() => {
         if (userInfo) {
             navigate(redirect)
@@ -35,10 +52,14 @@ const LoginScreen = () => {
         dispatch(login(email, password))
     }
 
-    const googleLoginHandler = (e) => {
-        e.preventDefault()
-        dispatch(googleLogin())
-    }
+    const onSuccess = (res) => {
+        const {email, familyName, givenName} = res.profileObj
+        dispatch(googleLogin(email, familyName, givenName))
+    };
+
+    const onFailure = (err) => {
+        console.log('failed:', err);
+    };
 
 
     return (
@@ -84,7 +105,16 @@ const LoginScreen = () => {
                 <Col md={1}></Col>
                 <Col md={5}>
                     <h5 className='my-1'>Sign in with third party account</h5>
-                    <GoogleButton onClick={googleLoginHandler} className='my-4'/>
+                    <GoogleLogin
+                        className='my-3'
+                        clientId={clientId}
+                        buttonText="Sign in with Google"
+                        onSuccess={onSuccess}
+                        onFailure={onFailure}
+                        cookiePolicy={'single_host_origin'}
+                        isSignedIn={userInfo}
+                    />
+
                 </Col>
 
             </Row>

@@ -41,7 +41,7 @@ const Orderscreen = () => {
             document.body.appendChild(script)
         }
 
-        if (!order || order._id !== orderId || successPay) {
+        if (!order || order.orderid !== orderId || successPay) {
             dispatch({type: ORDER_PAY_RESET})
             dispatch(getOrderDetails(orderId))
         } else if (!order.isPaid) {

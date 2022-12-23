@@ -8,12 +8,13 @@ import {
     PRODUCT_DETAIL_FAIL
 } from "../constants/productConstants";
 
+export const base = "https://5zibf2fks8.execute-api.us-east-1.amazonaws.com/test"
 
 export const listProducts = () => async (dispatch) => {
     try {
         dispatch({type: PRODUCT_LIST_REQUEST})
 
-        const {data} = await axios.get('http://44.201.156.65:5011/items')
+        const {data} = await axios.get(`${base}/items`)
 
         dispatch({
             type: PRODUCT_LIST_SUCCESS,
@@ -34,7 +35,7 @@ export const listProductDetails = (id) => async (dispatch) => {
     try {
         dispatch({type: PRODUCT_DETAIL_REQUEST})
 
-        const {data} = await axios.get(`http://44.201.156.65:5011/items/${id}`)
+        const {data} = await axios.get(`${base}/items/${id}`)
 
         dispatch({
             type: PRODUCT_DETAIL_SUCCESS,

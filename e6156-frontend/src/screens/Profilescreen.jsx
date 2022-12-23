@@ -18,7 +18,6 @@ const Profilescreen = () => {
     const { userInfo } = userLogin
 
     const orderList = useSelector(state => state.orderList)
-    console.log(orderList)
     const { loading: loadingOrders, error: errorOrders, orders } = orderList
 
     useEffect(() => {
@@ -29,6 +28,7 @@ const Profilescreen = () => {
 
         if (!orders || orders.length == 0) {
             dispatch(listMyorders(userInfo.email))
+            console.log(orderList)
             return
         }
 
@@ -50,29 +50,21 @@ const Profilescreen = () => {
                                     <th>ID</th>
                                     <th>DATE</th>
                                     <th>TOTAL</th>
-                                    <th>PAID</th>
-                                    <th>DELIVERD</th>
+                                    <th>BILLING</th>
+                                    <th>SHIPPING</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {orders.map(order => (
-                                    <tr key={order._id}>
-                                        <td>{order._id}</td>
-                                        <td>{order.createdAt}</td>
-                                        <td>{order.totalPrice}</td>
+                                    <tr key={order.orderid}>
+                                        <td>{order.orderid}</td>
+                                        <td>{order.order_date}</td>
+                                        <td>{order.total}</td>
+                                        <td>{order.billing_info}</td>
+                                        <td>{order.shipping_info}</td>
                                         <td>
-                                            {order.isPaid ? order.paidAt.substring(0, 10) : (
-                                                <i className='fas fa-times' style={{ color: "red" }}></i>
-                                            )}
-                                        </td>
-                                        <td>
-                                            {order.isDelivered ? order.deliverdAt.substring(0, 10) : (
-                                                <i className='fas fa-times' style={{ color: "red" }}></i>
-                                            )}
-                                        </td>
-                                        <td>
-                                            <LinkContainer to={`/order/${order._id}`}>
+                                            <LinkContainer to={`/orders/${order.orderid}`}>
                                                 <Button variant='light' className='btn-sm'>Details</Button>
                                             </LinkContainer>
                                         </td>

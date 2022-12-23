@@ -35,7 +35,7 @@ const Shippingscreen = () => {
     const searchHandler = (address) => {
         setIsLoading(true);
         const addrStr = `${address? address : ""}`
-        fetch(`http://10.124.161.32:5014/autocomplete?address=${addrStr}`)
+        fetch(`http://compositeapplication-env-1.eba-86pdxb9q.us-east-1.elasticbeanstalk.com/autocomplete?address=${addrStr}`)
             .then((resp) => resp.json())
             .then((Response) => {
                 if (Response.message) Response = []

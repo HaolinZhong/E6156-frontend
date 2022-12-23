@@ -17,19 +17,18 @@ export const createOrder = (newOrder) => async (dispatch, getState) => {
             }
         }
 
-        console.log(newOrder)
 
         const {billing_info, email, shipping_info, orderItems} = newOrder
 
 
         const { data } = await axios.post(`${base}/order`, {billing_info, email, shipping_info}, config)
 
-        const orderid = data.orderinfo.orderid
 
+        const orderid = data.orderinfo.orderid
 
         for (const item of orderItems) {
             const {product, price, qty} = item
-            await axios.post(`${base}/order/${orderid}/orderline`, {itemid: product, price, amount: qty}, config)
+            const {data} = await axios.post(`${base}/order/${orderid}/orderline`, {itemid: product, price, amount: qty}, config)
         }
 
         dispatch({
@@ -57,13 +56,9 @@ export const getOrderDetails = (orderId) => async (dispatch, getState) => {
         
         const { userLogin: { userInfo } } = getState()
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${userInfo.token}`
-            }
-        }
+        const { data } = await axios.get(`${order}/order/${orderId}`)
 
-        const { data } = await axios.get(`/api/orders/${orderId}`, config)
+        console.log(data)
 
         dispatch({
             type: ORDER_DETAILS_SUCCESS,
@@ -122,11 +117,12 @@ export const listMyorders = (email) => async (dispatch, getState) => {
         })
 
         const { data } = await axios.get(`${order}/order/${email}`)
-        console.log(data)
+        const total = data.metadata.result_set.total
+        const { data: data1 } = await axios.get(`${order}/order/${email}?pagesize=${total}&page=1`)
 
         dispatch({
             type: ORDER_LIST_SUCCESS,
-            payload: data.results
+            payload: data1.results
         })
 
     } catch (error) {
